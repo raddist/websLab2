@@ -1,0 +1,12 @@
+c:\users\andrey\documents\visual studio 2015\Projects\ping\ping\bin\Debug\ping.exe.config
+c:\users\andrey\documents\visual studio 2015\Projects\ping\ping\bin\Debug\ping.exe
+c:\users\andrey\documents\visual studio 2015\Projects\ping\ping\bin\Debug\ping.pdb
+c:\users\andrey\documents\visual studio 2015\Projects\ping\ping\obj\Debug\ping.csprojResolveAssemblyReference.cache
+c:\users\andrey\documents\visual studio 2015\Projects\ping\ping\obj\Debug\ping.Properties.Resources.resources
+c:\users\andrey\documents\visual studio 2015\Projects\ping\ping\obj\Debug\ping.csproj.GenerateResource.Cache
+c:\users\andrey\documents\visual studio 2015\Projects\ping\ping\obj\Debug\ping.exe
+c:\users\andrey\documents\visual studio 2015\Projects\ping\ping\obj\Debug\ping.pdb
+C:\Users\Andrey\Documents\Visual Studio 2015\Projects\ping\ping\obj\Debug\ping.Form1.resources
+C:\Users\Andrey\Documents\Visual Studio 2015\Projects\ping\ping_proj\ping\bin\Debug\ping.exe.config
+C:\Users\Andrey\Documents\Visual Studio 2015\Projects\ping\ping_proj\ping\obj\Debug\ping.exe
+C:\Users\Andrey\Documents\Visual Studio 2015\Projects\ping\ping_proj\ping\obj\Debug\ping.pdb

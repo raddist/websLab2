@@ -1,0 +1,8 @@
+# User-specific files
+*.suo
+*.user
+*.sdf
+*.opensdf
+
+/websLab1/websLab1/bin/Debug/*
+/websLab1/websLab1/obj/Debug/*

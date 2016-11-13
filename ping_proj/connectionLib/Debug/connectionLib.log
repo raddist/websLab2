@@ -1,0 +1,5 @@
+﻿  connectionLib.cpp
+  dllmain.cpp
+c:\users\andrey\documents\visual studio 2015\projects\ping\connectionlib\dllmain.cpp(29): warning C4101: from: неиспользованная локальная переменная
+c:\users\andrey\documents\visual studio 2015\projects\ping\connectionlib\dllmain.cpp(30): warning C4101: hp: неиспользованная локальная переменная
+  connectionLib.vcxproj -> C:\Users\Andrey\Documents\Visual Studio 2015\Projects\ping\Debug\connectionLib.dll
