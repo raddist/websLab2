@@ -42,7 +42,14 @@ int main()
 	}
 
 	//Прослушиваем все порты
-	ioctlsocket(s, 0x98000001, &flag);
+	if (ioctlsocket(s, 0x98000001, &flag))
+	{
+		printf("\nInvalid Bind=%d\n", WSAGetLastError());
+		closesocket(s);
+		WSACleanup();
+		system("pause");
+		return -1;
+	};
 
 	//Бесконечный цикл приема IP-пакетов. До тех пор, пока не будет нажата любая кнопка.
 	recvIp(s);
@@ -57,11 +64,18 @@ void recvIp(SOCKET s)
 {
 	// Буфер для приема данных
 	char Buffer[1024 * 64];
-	int count;
-	bool codeid[4] = {1, 1, 1, 1};
+	int count = 0;
+
+	// Фильтрация по типу пакета
+	const int clength = 4;
+	bool codeid[clength] = { 1, 1, 1, 1 };
+	LPCWSTR print[clength] = { L"", L"", L"", L"" };
+	LPCWSTR def[clength] = { L"UDP", L"TCP", L"ICMP", L"" };
+	std::wstring title = L"";
+	std::wstring space = L" ";
+
 	while (1)
 	{
-		count = recv(s, Buffer, sizeof(Buffer), 0);
 		if (_kbhit())
 		{
 			int key = _getch();
@@ -76,16 +90,39 @@ void recvIp(SOCKET s)
 			case 51:
 				codeid[2] = !codeid[2];
 				break;
+			case 99:
+				system("cls");
+				break;
 			case 27:
 				return;
 				break;
-			default:
+			case 32:
 				codeid[3] = !codeid[3];
 				break;
+			default:
+				break;
 			}
+			for (int i = 0; i < clength; i++)
+			{
+				if (codeid[i] == 1)
+				{
+					print[i] = def[i];
+				}
+				else
+				{
+					print[i] = L"";
+					if (i == clength - 1)
+						print[i] = L"pause";
+				}
+				title += print[i] + space;
+			}
+			SetConsoleTitleW(title.c_str());
+			title = L"";
 		}
 		if (!codeid[3])
 			continue;
+
+		count = recv(s, Buffer, sizeof(Buffer), 0);
 		// Обработка IP-пакета
 		if (count >= sizeof(IPHeader))
 		{
