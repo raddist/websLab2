@@ -41,7 +41,6 @@ typedef struct _ihdr {
 	USHORT i_cksum;
 	USHORT i_id;
 	USHORT i_seq;
-	/* This is not the std header, but we reserve space for time */
 	ULONG timestamp;
 }IcmpHeader;
 

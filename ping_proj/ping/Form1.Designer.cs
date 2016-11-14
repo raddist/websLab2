@@ -1,6 +1,6 @@
 ﻿namespace ping
 {
-    partial class Form1
+    partial class Interface
     {
         /// <summary>
         /// Обязательная переменная конструктора.
@@ -219,7 +219,7 @@
             this.prefsHeader.TabIndex = 0;
             this.prefsHeader.Text = "Extra preferences:";
             // 
-            // Form1
+            // Interface
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -237,8 +237,9 @@
             this.Controls.Add(this.typeLbl);
             this.Controls.Add(this.dstAddrLbl);
             this.Controls.Add(this.srcAddrLbl);
-            this.Name = "Form1";
+            this.Name = "Interface";
             this.Text = "ICMP generator";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Interface_FormClosing);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);

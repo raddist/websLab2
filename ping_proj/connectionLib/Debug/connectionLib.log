@@ -1,5 +1,7 @@
-﻿  connectionLib.cpp
+﻿  stdafx.cpp
+  connectionLib.cpp
   dllmain.cpp
-c:\users\andrey\documents\visual studio 2015\projects\ping\connectionlib\dllmain.cpp(29): warning C4101: from: неиспользованная локальная переменная
-c:\users\andrey\documents\visual studio 2015\projects\ping\connectionlib\dllmain.cpp(30): warning C4101: hp: неиспользованная локальная переменная
-  connectionLib.vcxproj -> C:\Users\Andrey\Documents\Visual Studio 2015\Projects\ping\Debug\connectionLib.dll
+c:\users\andrey\documents\visual studio 2015\projects\git_for_ping\ping_proj\connectionlib\dllmain.cpp(32): warning C4101: from: неиспользованная локальная переменная
+c:\users\andrey\documents\visual studio 2015\projects\git_for_ping\ping_proj\connectionlib\dllmain.cpp(33): warning C4101: hp: неиспользованная локальная переменная
+     Создается библиотека C:\Users\Andrey\Documents\Visual Studio 2015\Projects\git_for_ping\ping_proj\Debug\connectionLib.lib и объект C:\Users\Andrey\Documents\Visual Studio 2015\Projects\git_for_ping\ping_proj\Debug\connectionLib.exp
+  connectionLib.vcxproj -> C:\Users\Andrey\Documents\Visual Studio 2015\Projects\git_for_ping\ping_proj\Debug\connectionLib.dll

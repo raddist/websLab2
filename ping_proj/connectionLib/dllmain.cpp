@@ -2,6 +2,7 @@
 #include "stdafx.h"
 #include "raw.h"
 
+//dll part
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
                        LPVOID lpReserved
@@ -21,9 +22,11 @@ BOOL APIENTRY DllMain( HMODULE hModule,
 #pragma pack(4)
 
 
+// main function
 extern "C" __declspec(dllexport)
 int sendPacket(int srcAddr, int dstAddr, int type, int code, int loops, double delay) 
 {
+	// vars
 	WSADATA wsaData;
 	SOCKET sockRaw;
 	struct sockaddr_in dest, from;
@@ -36,40 +39,34 @@ int sendPacket(int srcAddr, int dstAddr, int type, int code, int loops, double d
 	char *recvbuf;
 	unsigned int addr = 0;
 	USHORT seq_no = 0;
-
 	int msDelay = (int)(delay * 1000);
 
+	// launch library
 	if (WSAStartup(MAKEWORD(2, 2), &wsaData) != 0) {
 		fprintf(stderr, "WSAStartup failed: %d\n", GetLastError());
 		ExitProcess(STATUS_FAILED);
 	}
 
+	// make raw socket
 	sockRaw = WSASocket(AF_INET,
 		SOCK_RAW,
 		IPPROTO_ICMP,
 		NULL, 0, 0);
+	if (sockRaw == INVALID_SOCKET) 
+	{
+		return -1;
+	}
 
-	if (sockRaw == INVALID_SOCKET) {
-		fprintf(stderr, "WSASocket() failed: %d\n", WSAGetLastError());
-		ExitProcess(STATUS_FAILED);
-	}
-	bread = setsockopt(sockRaw, SOL_SOCKET, SO_RCVTIMEO, (char*)&timeout,
-		sizeof(timeout));
-	if (bread == SOCKET_ERROR) {
-		fprintf(stderr, "failed to set recv timeout: %d\n", WSAGetLastError());
-		ExitProcess(STATUS_FAILED);
-	}
+	// set options
 	timeout = 1000;
 	bread = setsockopt(sockRaw, SOL_SOCKET, SO_SNDTIMEO, (char*)&timeout,
 		sizeof(timeout));
-	if (bread == SOCKET_ERROR) {
-		fprintf(stderr, "failed to set send timeout: %d\n", WSAGetLastError());
-		ExitProcess(STATUS_FAILED);
+	if (bread == SOCKET_ERROR) 
+	{
+		//"failed to set send timeout"
+		return -2;
 	}
 	memset(&dest, 0, sizeof(dest));
-
-
-
 
 	// make dst address
 	addr = (unsigned int)dstAddr;;
@@ -77,19 +74,17 @@ int sendPacket(int srcAddr, int dstAddr, int type, int code, int loops, double d
 	dest.sin_family = AF_INET;
 	dest_ip = inet_ntoa(dest.sin_addr);
 
+	// make header data
 	datasize = DEF_PACKET_SIZE;
-
-
 	datasize += sizeof(IcmpHeader);
 
 	icmp_data = (char*)malloc(MAX_PACKET);
 	recvbuf = (char*)malloc(MAX_PACKET);
 
 	if (!icmp_data) {
-		fprintf(stderr, "HeapAlloc failed %d\n", GetLastError());
-		ExitProcess(STATUS_FAILED);
+		//"HeapAlloc failed"
+		return -3;
 	}
-
 
 	memset(icmp_data, 0, MAX_PACKET);
 	fill_icmp_data(icmp_data, datasize, (BYTE)type, (BYTE)code);
@@ -109,18 +104,13 @@ int sendPacket(int srcAddr, int dstAddr, int type, int code, int loops, double d
 		bwrote = sendto(sockRaw, icmp_data, datasize, 0, (struct sockaddr*)&dest,
 			sizeof(dest));
 		if (bwrote == SOCKET_ERROR) {
-			if (WSAGetLastError() == WSAETIMEDOUT) {
-				printf("timed out\n");
-				continue;
-			}
-			fprintf(stderr, "sendto failed: %d\n", WSAGetLastError());
-			ExitProcess(STATUS_FAILED);
+			//"sendto failed: %d\n"
+			return -4;
 		}
 		Sleep(msDelay);
 	}
 
 	return  type;
-
 }
 /*
 The response is an IP packet. We must decode the IP header to locate
@@ -157,7 +147,7 @@ the ICMP data
 
 }*/
 
-
+// calculate checksum
 USHORT checksum(USHORT *buffer, int size) {
 
 	unsigned long cksum = 0;
@@ -175,9 +165,9 @@ USHORT checksum(USHORT *buffer, int size) {
 	cksum += (cksum >> 16);
 	return (USHORT)(~cksum);
 }
-/*
-Helper function to fill in various stuff in our ICMP request.
-*/
+
+
+/// @brief Helper function to fill in various stuff in our ICMP request.
 void fill_icmp_data(char * icmp_data, int datasize, BYTE type, BYTE code) 
 {
 	IcmpHeader *icmp_hdr;

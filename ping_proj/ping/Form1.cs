@@ -8,15 +8,18 @@ using System.Text;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Net;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace ping
 {
-    public unsafe partial class Form1 : Form
+    public unsafe partial class Interface : Form
     {
         bool isSendingStart = false;
+        Thread myThread;                    // thread for listening socket
+        Preferences prefsSet;               // set of preferences
 
-        Preferences prefsSet;
-        public Form1()
+        public Interface()
         {
             InitializeComponent();
 
@@ -57,19 +60,31 @@ namespace ping
                 return;
             }
 
-            resBody.Text = "Sending is processing";
-
             // resultLbl.Text = Marshal.PtrToStringAnsi((IntPtr)Imports.sendPacket((char*)"sad", "fd", 8, 0));
-            //int srcAddress = BitConverter.ToInt32(IPAddress.Parse(srcAddrTxtBox.Text).GetAddressBytes(), 0);
-            //int dstAddress = BitConverter.ToInt32(IPAddress.Parse(dstAddrTxtBox.Text).GetAddressBytes(), 0);
-            //resultLbl.Text = typeComboBox.SelectedItem.ToString() + " ";
+            myThread = new Thread(send);
+            myThread.Start();
+            resBody.Text = "Sending is processing";
+            isSendingStart = true;
+        }
+
+        ///  @brief main function of thread
+        void send()
+        {
             int result = Imports.sendPacket(prefsSet.GetSrcAddress(),
                                             prefsSet.GetDstAddress(),
                                             prefsSet.GetPacType(),
                                             prefsSet.GetCode(),
                                             prefsSet.GetVolume(),
                                             prefsSet.GetDelay());
-            resBody.Text = "Successful sending";
+            if (result > 0)
+            {
+                resBody.Text = "Successful sending";
+            }
+            else
+            {
+                resBody.Text = "Something bad occured";
+            }
+            isSendingStart = false;
         }
 
         private bool validateAndSet(Preferences set)
@@ -150,6 +165,7 @@ namespace ping
             return true;
         }
 
+        // campare type and code of ICMP packet
         private bool mapTypeCode(int type, int code)
         {
             int[] inds = new int[] {3,5,11,12 };
@@ -166,6 +182,11 @@ namespace ping
                 return false;
             }
             return true;
+        }
+
+        private void Interface_FormClosing(object sender, FormClosingEventArgs e)
+        {
+
         }
     }
 

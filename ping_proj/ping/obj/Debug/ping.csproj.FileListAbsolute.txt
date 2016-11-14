@@ -16,6 +16,6 @@ C:\Users\Andrey\Documents\Visual Studio 2015\Projects\git_for_ping\ping_proj\pin
 C:\Users\Andrey\Documents\Visual Studio 2015\Projects\git_for_ping\ping_proj\ping\bin\Debug\ping.exe
 C:\Users\Andrey\Documents\Visual Studio 2015\Projects\git_for_ping\ping_proj\ping\bin\Debug\ping.pdb
 C:\Users\Andrey\Documents\Visual Studio 2015\Projects\git_for_ping\ping_proj\ping\obj\Debug\ping.csprojResolveAssemblyReference.cache
-C:\Users\Andrey\Documents\Visual Studio 2015\Projects\git_for_ping\ping_proj\ping\obj\Debug\ping.Form1.resources
 C:\Users\Andrey\Documents\Visual Studio 2015\Projects\git_for_ping\ping_proj\ping\obj\Debug\ping.Properties.Resources.resources
 C:\Users\Andrey\Documents\Visual Studio 2015\Projects\git_for_ping\ping_proj\ping\obj\Debug\ping.csproj.GenerateResource.Cache
+C:\Users\Andrey\Documents\Visual Studio 2015\Projects\git_for_ping\ping_proj\ping\obj\Debug\ping.Interface.resources
