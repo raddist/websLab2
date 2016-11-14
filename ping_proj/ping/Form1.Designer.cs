@@ -41,8 +41,6 @@
             this.codeComboBox = new System.Windows.Forms.ComboBox();
             this.resBody = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.errHeader = new System.Windows.Forms.Label();
             this.delayTxtBox = new System.Windows.Forms.TextBox();
             this.volumeTxtBox = new System.Windows.Forms.TextBox();
             this.delayLbl = new System.Windows.Forms.Label();
@@ -167,8 +165,6 @@
             // panel1
             // 
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.panel1.Controls.Add(this.label1);
-            this.panel1.Controls.Add(this.errHeader);
             this.panel1.Controls.Add(this.delayTxtBox);
             this.panel1.Controls.Add(this.volumeTxtBox);
             this.panel1.Controls.Add(this.delayLbl);
@@ -178,25 +174,6 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(522, 95);
             this.panel1.TabIndex = 14;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(312, 33);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(71, 13);
-            this.label1.TabIndex = 6;
-            this.label1.Text = "All is fine now";
-            // 
-            // errHeader
-            // 
-            this.errHeader.AutoSize = true;
-            this.errHeader.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.errHeader.Location = new System.Drawing.Point(311, 9);
-            this.errHeader.Name = "errHeader";
-            this.errHeader.Size = new System.Drawing.Size(56, 20);
-            this.errHeader.TabIndex = 5;
-            this.errHeader.Text = "Errors:";
             // 
             // delayTxtBox
             // 
@@ -289,8 +266,6 @@
         private System.Windows.Forms.Label delayLbl;
         private System.Windows.Forms.Label countLbl;
         private System.Windows.Forms.TextBox delayTxtBox;
-        private System.Windows.Forms.Label errHeader;
-        private System.Windows.Forms.Label label1;
     }
 }
 

@@ -21,16 +21,17 @@ namespace ping
             InitializeComponent();
 
             // prepare type and code
-            System.Object[] ItemObject1 = new System.Object[16];
-            for (int i = 0; i < 16; i++)
+            System.Object[] ItemObject1 = new System.Object[15];
+            int[] values = new int[] {0,3,4,5,8,9,10,11,12,13,14,15,16,17,18 };
+            for (int i = 0; i < 15; i++)
             {
-                ItemObject1[i] = i;
+                ItemObject1[i] = values[i];
             }
             typeComboBox.Items.AddRange(ItemObject1);
-            typeComboBox.SelectedIndex = 8;
+            typeComboBox.SelectedIndex = 4;
 
-            System.Object[] ItemObject2 = new System.Object[3];
-            for (int i = 0; i < 3; i++)
+            System.Object[] ItemObject2 = new System.Object[16];
+            for (int i = 0; i < 16; i++)
             {
                 ItemObject2[i] = i;
             }
@@ -51,7 +52,10 @@ namespace ping
                 return;
             }
 
-            validateAndSet(prefsSet);
+            if (!validateAndSet(prefsSet))
+            {
+                return;
+            }
 
             resBody.Text = "Sending is processing";
 
@@ -59,52 +63,109 @@ namespace ping
             //int srcAddress = BitConverter.ToInt32(IPAddress.Parse(srcAddrTxtBox.Text).GetAddressBytes(), 0);
             //int dstAddress = BitConverter.ToInt32(IPAddress.Parse(dstAddrTxtBox.Text).GetAddressBytes(), 0);
             //resultLbl.Text = typeComboBox.SelectedItem.ToString() + " ";
-            Imports.sendPacket(prefsSet.GetSrcAddress(),
-                                prefsSet.GetDstAddress(),
-                                prefsSet.GetPacType(),
-                                prefsSet.GetCode(),
-                                prefsSet.GetVolume(),
-                                prefsSet.GetDelay());
+            int result = Imports.sendPacket(prefsSet.GetSrcAddress(),
+                                            prefsSet.GetDstAddress(),
+                                            prefsSet.GetPacType(),
+                                            prefsSet.GetCode(),
+                                            prefsSet.GetVolume(),
+                                            prefsSet.GetDelay());
+            resBody.Text = "Successful sending";
         }
 
-        private void validateAndSet(Preferences set)
+        private bool validateAndSet(Preferences set)
         {
-            int srcAddress = BitConverter.ToInt32(IPAddress.Parse(srcAddrTxtBox.Text).GetAddressBytes(), 0);
-            int dstAddress = BitConverter.ToInt32(IPAddress.Parse(dstAddrTxtBox.Text).GetAddressBytes(), 0);
+            // validate IP addresses
+            int srcAddress = 0;
+            try {
+                srcAddress = BitConverter.ToInt32(IPAddress.Parse(srcAddrTxtBox.Text).GetAddressBytes(), 0);
+            }
+            catch (Exception srcIPexc)
+            {
+                resBody.Text = "Error: incorrect source address";
+                return false;
+            }
 
-            //prepare nPackets
-            int count = 0;
+            int dstAddress = 0;
+            try {
+                dstAddress = BitConverter.ToInt32(IPAddress.Parse(dstAddrTxtBox.Text).GetAddressBytes(), 0);
+            }
+            catch(Exception dstIPexc)
+            {
+                resBody.Text = "Error: incorrect destination address";
+                return false;
+            }
+
+            // validate volume (nymber of packets)
+            int volume = 0;
             try
             {
-                count = Convert.ToInt32(volumeTxtBox.Text);
+                volume = Convert.ToInt32(volumeTxtBox.Text);
+                if (volume < 0)
+                {
+                    resBody.Text = "Error: incorrect number of packets";
+                    return false;
+                }
             }
             catch (Exception except)
             {
-                volumeTxtBox.Text = set.GetVolume().ToString();
+                //volumeTxtBox.Text = set.GetVolume().ToString();
+                resBody.Text = "Error: incorrect number of packets";
+                return false;
             }
 
-            //prepare nPackets
+            //prepare sending delay
             double delay = 0;
             try
             {
                 delay = Convert.ToDouble(delayTxtBox.Text);
+                if (delay < 0)
+                {
+                    resBody.Text = "Error: incorrect sending delay";
+                    return false;
+                }
             }
             catch (Exception except)
             {
-                delayTxtBox.Text = set.GetDelay().ToString();
+                //delayTxtBox.Text = set.GetDelay().ToString();
+                resBody.Text = "Error: incorrect sending delay";
+                return false;
             }
 
             //prepare type and code
             int type = Convert.ToInt32(typeComboBox.SelectedItem);
             int code = Convert.ToInt32(codeComboBox.SelectedItem);
-            //map(type, code);
+            if(!mapTypeCode(type, code))
+            {
+                resBody.Text = "Error: incorrect code";
+                return false;
+            }
 
             set.setPreferences(srcAddress,
                                 dstAddress,
                                 type,
                                 code,
-                                count,
+                                volume,
                                 delay);
+
+            return true;
+        }
+
+        private bool mapTypeCode(int type, int code)
+        {
+            int[] inds = new int[] {3,5,11,12 };
+            if ((code > 0) && (Array.IndexOf(inds, type) < 0))
+            {
+                return false;
+            }
+            if ((code > 1) && (type != 3) && (type != 5))
+            {
+                return false;
+            }
+            if ((code > 3) && (type != 3))
+            {
+                return false;
+            }
+            return true;
         }
     }
 
